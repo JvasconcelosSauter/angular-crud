@@ -1,0 +1,26 @@
+# Etapa de compilação
+FROM node:14 AS build-step
+
+WORKDIR /app
+
+COPY frontend/package.json .
+
+RUN npm install
+
+COPY frontend/ .
+
+# Construa o projeto Angular para produção
+RUN npm run build
+
+# Etapa de execução
+FROM nginx:alpine
+
+# Copie os arquivos de compilação do estágio anterior para o servidor nginx
+COPY --from=build-step /app/dist/frontend /usr/share/nginx/html
+
+# Exponha a porta para o servidor web
+EXPOSE 80
+
+# Inicie o nginx e mantenha o processo em execução
+CMD ["nginx", "-g", "daemon off;"]
+
