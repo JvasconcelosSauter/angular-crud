@@ -3,7 +3,7 @@ name: Build and Deploy to GKE
 on:
   push:
     branches:
-      - main # Sua branch de produção
+      - master # Sua branch de produção
   
 jobs:
   set-build-and-deploy:
